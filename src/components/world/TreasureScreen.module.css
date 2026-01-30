@@ -1,0 +1,308 @@
+.container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Confetti */
+.confetti {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.confettiPiece {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  top: -20px;
+  border-radius: 2px;
+  animation: fall 4s linear infinite;
+}
+
+@keyframes fall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+.content {
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  max-width: 500px;
+  width: 100%;
+}
+
+/* Trophy */
+.trophyWrapper {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+.trophy {
+  font-size: 100px;
+  display: block;
+  animation: bounce 1s ease-in-out infinite;
+  filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.5));
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-15px) scale(1.05); }
+}
+
+.sparkles {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 30px;
+  animation: sparkle 1.5s ease-in-out infinite;
+}
+
+@keyframes sparkle {
+  0%, 100% { opacity: 1; transform: translateX(-50%) scale(1); }
+  50% { opacity: 0.5; transform: translateX(-50%) scale(1.2); }
+}
+
+.title {
+  color: #fff;
+  font-size: 36px;
+  margin: 0 0 8px 0;
+  text-shadow: 0 2px 20px rgba(102, 126, 234, 0.5);
+}
+
+.subtitle {
+  color: #a0aec0;
+  font-size: 18px;
+  margin: 0 0 30px 0;
+}
+
+/* Certificate */
+.certificate {
+  background: linear-gradient(145deg, #1a1a2e 0%, #16213e 100%);
+  border: 2px solid rgba(255, 215, 0, 0.3);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.certificate::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #ffd700, #ffec8b, #ffd700);
+}
+
+.certificateHeader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.certificateHeader h2 {
+  color: #ffd700;
+  font-size: 18px;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.certificateStar {
+  font-size: 20px;
+}
+
+.certificateBody {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.certText {
+  color: #a0aec0;
+  font-size: 14px;
+  margin: 0;
+}
+
+.playerBadge {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(102, 126, 234, 0.2);
+  padding: 12px 24px;
+  border-radius: 30px;
+  margin: 8px 0;
+}
+
+.certAvatar {
+  font-size: 36px;
+}
+
+.certName {
+  color: #fff;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.certSteps {
+  color: #38ef7d;
+  font-size: 28px;
+  font-weight: 700;
+  margin: 8px 0;
+}
+
+.certDate {
+  color: #718096;
+  font-size: 12px;
+  margin-top: 12px;
+}
+
+.certificateSeal {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #ffd700, #ffaa00);
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #1a1a2e;
+  font-weight: 700;
+  font-size: 10px;
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+}
+
+.certificateSeal span:first-child {
+  font-size: 12px;
+}
+
+/* Achievements */
+.achievements {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.achievement {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 12px 16px;
+  border-radius: 12px;
+  min-width: 100px;
+}
+
+.achievementIcon {
+  font-size: 28px;
+}
+
+.achievement span:last-child {
+  color: #a0aec0;
+  font-size: 11px;
+}
+
+/* Actions */
+.actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.primaryButton {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.primaryButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.secondaryButton {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 14px 28px;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.secondaryButton:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .trophy {
+    font-size: 70px;
+  }
+
+  .title {
+    font-size: 28px;
+  }
+
+  .certificate {
+    padding: 16px;
+  }
+
+  .certName {
+    font-size: 20px;
+  }
+
+  .certSteps {
+    font-size: 24px;
+  }
+
+  .achievements {
+    gap: 10px;
+  }
+
+  .achievement {
+    min-width: 80px;
+    padding: 10px 12px;
+  }
+}

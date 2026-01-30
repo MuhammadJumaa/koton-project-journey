@@ -1,0 +1,334 @@
+.container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+}
+
+.worldContainer {
+  position: relative;
+  min-height: 100vh;
+}
+
+.errorMessage {
+  color: #ff6b6b;
+  font-size: var(--font-size-sm);
+  margin-top: var(--spacing-md);
+}
+
+.treasureButton {
+  position: fixed;
+  bottom: 20px;
+  right: 320px;
+  background: linear-gradient(135deg, #ffd700 0%, #ffaa00 100%);
+  color: #1a1a2e;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(255, 215, 0, 0.4);
+  animation: pulse 2s infinite;
+  z-index: 100;
+}
+
+.treasureButton:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 25px rgba(255, 215, 0, 0.5);
+}
+
+@media (max-width: 768px) {
+  .treasureButton {
+    right: 20px;
+    bottom: 220px;
+  }
+}
+
+/* Intro Screen */
+.introScreen {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xl);
+  text-align: center;
+}
+
+.logo {
+  font-size: 5rem;
+  margin-bottom: var(--spacing-lg);
+  animation: bounce 2s infinite;
+}
+
+.title {
+  font-size: var(--font-size-4xl);
+  font-weight: 800;
+  color: var(--color-white);
+  margin-bottom: var(--spacing-md);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.subtitle {
+  font-size: var(--font-size-lg);
+  color: var(--color-gray-400);
+  max-width: 500px;
+  margin-bottom: var(--spacing-2xl);
+}
+
+.nameForm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: var(--spacing-2xl);
+}
+
+.nameInput {
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: var(--bg-tertiary);
+  border: 2px solid var(--color-gray-600);
+  border-radius: var(--radius-md);
+  color: var(--color-white);
+  font-size: var(--font-size-lg);
+  text-align: center;
+  transition: all var(--transition-fast);
+}
+
+.nameInput:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-glow);
+}
+
+.nameInput::placeholder {
+  color: var(--color-gray-500);
+}
+
+.features {
+  display: flex;
+  gap: var(--spacing-xl);
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  color: var(--color-gray-400);
+  font-size: var(--font-size-sm);
+}
+
+.featureIcon {
+  font-size: var(--font-size-xl);
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-md) var(--spacing-xl);
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--color-gray-700);
+}
+
+.playerInfo {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.playerIcon {
+  font-size: var(--font-size-2xl);
+}
+
+.playerName {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--color-white);
+}
+
+.stats {
+  display: flex;
+  gap: var(--spacing-xl);
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.statLabel {
+  font-size: var(--font-size-xs);
+  color: var(--color-gray-400);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.statValue {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--color-gold);
+}
+
+.resetButton {
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: transparent;
+  border: 1px solid var(--color-gray-600);
+  border-radius: var(--radius-sm);
+  color: var(--color-gray-400);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.resetButton:hover {
+  border-color: var(--color-error);
+  color: var(--color-error);
+}
+
+/* Progress Section */
+.progressSection {
+  padding: var(--spacing-md) var(--spacing-xl);
+  background: var(--bg-tertiary);
+}
+
+/* Complete Screen */
+.completeScreen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--spacing-2xl);
+  text-align: center;
+}
+
+.completeIcon {
+  font-size: 6rem;
+  margin-bottom: var(--spacing-lg);
+  animation: bounce 1s ease;
+}
+
+.completeTitle {
+  font-size: var(--font-size-3xl);
+  font-weight: 700;
+  color: var(--color-success);
+  margin-bottom: var(--spacing-md);
+}
+
+.completeMessage {
+  font-size: var(--font-size-lg);
+  color: var(--color-gray-300);
+  margin-bottom: var(--spacing-xl);
+}
+
+.finalScore {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--spacing-lg);
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--spacing-xl);
+}
+
+.finalScoreLabel {
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-400);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.finalScoreValue {
+  font-size: var(--font-size-4xl);
+  font-weight: 800;
+  color: var(--color-gold);
+}
+
+.rewards {
+  margin-bottom: var(--spacing-xl);
+}
+
+.rewards h3 {
+  font-size: var(--font-size-lg);
+  color: var(--color-white);
+  margin-bottom: var(--spacing-md);
+}
+
+.rewardsList {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--spacing-sm);
+}
+
+.rewardItem {
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--bg-card);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-300);
+}
+
+/* Reset Modal */
+.resetMessage {
+  color: var(--color-gray-300);
+  margin-bottom: var(--spacing-lg);
+}
+
+.resetActions {
+  display: flex;
+  gap: var(--spacing-md);
+  justify-content: flex-end;
+}
+
+/* Back to Mode Button */
+.backToMode {
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: transparent;
+  border: 1px solid var(--color-gray-600);
+  border-radius: var(--radius-sm);
+  color: var(--color-gray-400);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.backToMode:hover {
+  border-color: var(--color-primary);
+  color: var(--color-white);
+}
+
+/* Battle Mode Content */
+.battleContent {
+  padding-top: 80px; /* Space for BattleHUD */
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@media (max-width: 600px) {
+  .header {
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+  }
+
+  .features {
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+
+  .title {
+    font-size: var(--font-size-2xl);
+  }
+}

@@ -1,0 +1,105 @@
+.container {
+  width: 100%;
+}
+
+.labelContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.label {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-gray-300);
+}
+
+.percentage {
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--color-white);
+}
+
+.percentageInline {
+  display: block;
+  text-align: right;
+  margin-top: 0.25rem;
+  font-size: var(--font-size-xs);
+  color: var(--color-gray-400);
+}
+
+.track {
+  width: 100%;
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  position: relative;
+}
+
+.small {
+  height: 6px;
+}
+
+.medium {
+  height: 10px;
+}
+
+.large {
+  height: 16px;
+}
+
+.fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  transition: width 0.5s ease-out;
+  position: relative;
+  overflow: hidden;
+}
+
+.shine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  border-radius: var(--radius-full) var(--radius-full) 0 0;
+}
+
+/* Variants */
+.default {
+  background: linear-gradient(
+    90deg,
+    var(--color-primary) 0%,
+    var(--color-primary-light) 100%
+  );
+}
+
+.success {
+  background: linear-gradient(
+    90deg,
+    var(--color-success) 0%,
+    var(--color-success-light) 100%
+  );
+}
+
+.warning {
+  background: linear-gradient(
+    90deg,
+    var(--color-warning) 0%,
+    var(--color-warning-light) 100%
+  );
+}
+
+.xp {
+  background: linear-gradient(
+    90deg,
+    var(--color-xp) 0%,
+    #a855f7 100%
+  );
+}
