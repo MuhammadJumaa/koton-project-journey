@@ -1,7 +1,7 @@
 # Koton Proje Yolculuğu
 
 Koton DX WebApp projesi oluşturmanın 11 adımını öğrenmek için interaktif bir oyun.
-
+    
 ## Canlı Demo
 
 **Frontend:** https://game-hazel-six-44.vercel.app
