@@ -195,6 +195,54 @@
 .signatureItem {
   text-align: center;
   min-width: 100px;
+  position: relative;
+}
+
+.signatureIcon {
+  font-size: 32px;
+  margin-bottom: 4px;
+  animation: wave 2s ease-in-out infinite;
+}
+
+.signatureItem:nth-child(2) .signatureIcon {
+  animation-delay: 0.3s;
+}
+
+.signatureItem:nth-child(3) .signatureIcon {
+  animation-delay: 0.6s;
+}
+
+@keyframes wave {
+  0%, 100% { transform: rotate(-5deg); }
+  50% { transform: rotate(5deg); }
+}
+
+.stamp {
+  margin-top: 6px;
+  font-size: 8px;
+  font-weight: 700;
+  color: #38ef7d;
+  background: rgba(56, 239, 125, 0.15);
+  padding: 3px 8px;
+  border-radius: 4px;
+  border: 1px solid rgba(56, 239, 125, 0.3);
+  display: inline-block;
+  transform: rotate(-3deg);
+  animation: stampPop 0.5s ease-out;
+}
+
+.signatureItem:nth-child(2) .stamp {
+  transform: rotate(2deg);
+}
+
+.signatureItem:nth-child(3) .stamp {
+  transform: rotate(-2deg);
+}
+
+@keyframes stampPop {
+  0% { transform: scale(0) rotate(-10deg); opacity: 0; }
+  50% { transform: scale(1.2) rotate(5deg); }
+  100% { transform: scale(1) rotate(-3deg); opacity: 1; }
 }
 
 .signatureLine {
@@ -369,5 +417,14 @@
 
   .signatureTitle {
     font-size: 7px;
+  }
+
+  .signatureIcon {
+    font-size: 24px;
+  }
+
+  .stamp {
+    font-size: 6px;
+    padding: 2px 6px;
   }
 }

@@ -64,25 +64,31 @@ export function TreasureScreen({ onBackToMap, onRestart }: TreasureScreenProps) 
 
           <div className={styles.signatures}>
             <div className={styles.signatureItem}>
+              <div className={styles.signatureIcon}>👨‍💼</div>
               <div className={styles.signatureLine}>
                 <span className={styles.signature}>Murat Karakaş</span>
               </div>
               <p className={styles.signatureName}>MURAT KARAKAŞ</p>
               <p className={styles.signatureTitle}>Yazılım Geliştirme Grup Müdürü</p>
+              <div className={styles.stamp}>✓ ONAYLANDI</div>
             </div>
             <div className={styles.signatureItem}>
+              <div className={styles.signatureIcon}>🧑‍💻</div>
               <div className={styles.signatureLine}>
                 <span className={styles.signature}>Yasin Mataracı</span>
               </div>
               <p className={styles.signatureName}>YASİN MATARACI</p>
               <p className={styles.signatureTitle}>Yazılım Yöneticisi</p>
+              <div className={styles.stamp}>✓ ONAYLANDI</div>
             </div>
             <div className={styles.signatureItem}>
+              <div className={styles.signatureIcon}>👨‍🔧</div>
               <div className={styles.signatureLine}>
                 <span className={styles.signature}>Nurettin Bozak</span>
               </div>
               <p className={styles.signatureName}>NURETTİN BOZAK</p>
               <p className={styles.signatureTitle}>Yazılım Yöneticisi</p>
+              <div className={styles.stamp}>✓ ONAYLANDI</div>
             </div>
           </div>
 
