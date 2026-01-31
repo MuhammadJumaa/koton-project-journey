@@ -7,7 +7,10 @@ class WorldManager {
   }
 
   // Add a player to the world
-  addPlayer(socketId, name, avatar, currentStep = 1, completedSteps = []) {
+  addPlayer(socketId, name, avatar, currentStep = 1, completedSteps = [], startedAt = null, completedAt = null) {
+    const TOTAL_STEPS = 11;
+    const isCompleted = completedSteps.length === TOTAL_STEPS;
+
     const player = {
       socketId,
       name,
@@ -15,6 +18,9 @@ class WorldManager {
       currentStep,
       completedSteps,
       joinedAt: Date.now(),
+      startedAt: startedAt || Date.now(),
+      completedAt: isCompleted ? (completedAt || Date.now()) : null,
+      totalTimeMs: isCompleted && startedAt ? (completedAt || Date.now()) - startedAt : null,
     };
 
     this.players.set(socketId, player);
@@ -65,6 +71,12 @@ class WorldManager {
       player.currentStep = TOTAL_STEPS;
     }
 
+    // Mark completion time if all steps are done
+    if (player.completedSteps.length === TOTAL_STEPS && !player.completedAt) {
+      player.completedAt = Date.now();
+      player.totalTimeMs = player.completedAt - player.startedAt;
+    }
+
     return player;
   }
 
@@ -75,8 +87,43 @@ class WorldManager {
 
     player.completedSteps = [];
     player.currentStep = 1;
+    player.startedAt = Date.now();
+    player.completedAt = null;
+    player.totalTimeMs = null;
 
     return player;
+  }
+
+  // Get leaderboard sorted by progress (descending), then by time (ascending)
+  getLeaderboard() {
+    const players = this.getAllPlayers();
+    const TOTAL_STEPS = 11;
+
+    return players
+      .map((p) => ({
+        socketId: p.socketId,
+        name: p.name,
+        avatar: p.avatar,
+        progress: Math.round((p.completedSteps.length / TOTAL_STEPS) * 100),
+        completedSteps: p.completedSteps.length,
+        totalTimeMs: p.totalTimeMs,
+        isCompleted: p.completedSteps.length === TOTAL_STEPS,
+      }))
+      .sort((a, b) => {
+        // First sort by progress (descending)
+        if (b.progress !== a.progress) {
+          return b.progress - a.progress;
+        }
+        // Then by completion time (ascending) - only for completed players
+        if (a.isCompleted && b.isCompleted && a.totalTimeMs && b.totalTimeMs) {
+          return a.totalTimeMs - b.totalTimeMs;
+        }
+        // Completed players come before non-completed
+        if (a.isCompleted !== b.isCompleted) {
+          return a.isCompleted ? -1 : 1;
+        }
+        return 0;
+      });
   }
 
   // Update player info (name or avatar)

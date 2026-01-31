@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import { steps, Step, TOTAL_STEPS } from '../../data/steps';
+import { easterEggs, EasterEgg as EasterEggType } from '../../data/easterEggs';
 import { useWorld } from '../../context/WorldContext';
 import { StepPopup } from './StepPopup';
 import { MapAvatar } from './PlayerAvatar';
+import { EasterEgg } from './EasterEgg';
+import { EasterEggModal } from './EasterEggModal';
 import styles from './WorldMap.module.css';
 
 interface StepNodeProps {
@@ -54,8 +57,9 @@ function StepNode({ step, status, playersAtStep, onClick }: StepNodeProps) {
 }
 
 export function WorldMap() {
-  const { playerName, avatar, completedSteps, players, completeStep, socketId } = useWorld();
+  const { playerName, avatar, completedSteps, players, completeStep, socketId, foundEasterEggs, findEasterEgg } = useWorld();
   const [selectedStep, setSelectedStep] = useState<Step | null>(null);
+  const [selectedEasterEgg, setSelectedEasterEgg] = useState<EasterEggType | null>(null);
 
   const getStepStatus = (stepId: number): 'locked' | 'available' | 'completed' => {
     if (completedSteps.includes(stepId)) return 'completed';
@@ -85,6 +89,17 @@ export function WorldMap() {
       completeStep(selectedStep.id);
     }
     setSelectedStep(null);
+  };
+
+  const handleEasterEggClick = (egg: EasterEggType) => {
+    setSelectedEasterEgg(egg);
+  };
+
+  const handleEasterEggClose = () => {
+    if (selectedEasterEgg) {
+      findEasterEgg(selectedEasterEgg.id);
+    }
+    setSelectedEasterEgg(null);
   };
 
   const progressPercentage = Math.round((completedSteps.length / TOTAL_STEPS) * 100);
@@ -161,6 +176,16 @@ export function WorldMap() {
         <span className={styles.playerName}>{playerName}</span>
       </div>
 
+      {/* Easter Eggs */}
+      {easterEggs.map((egg) => (
+        <EasterEgg
+          key={egg.id}
+          egg={egg}
+          isFound={foundEasterEggs.includes(egg.id)}
+          onClick={() => handleEasterEggClick(egg)}
+        />
+      ))}
+
       {/* Step popup */}
       {selectedStep && (
         <StepPopup
@@ -168,6 +193,14 @@ export function WorldMap() {
           isCompleted={completedSteps.includes(selectedStep.id)}
           onComplete={handleCompleteStep}
           onClose={() => setSelectedStep(null)}
+        />
+      )}
+
+      {/* Easter Egg Modal */}
+      {selectedEasterEgg && (
+        <EasterEggModal
+          egg={selectedEasterEgg}
+          onClose={handleEasterEggClose}
         />
       )}
     </div>

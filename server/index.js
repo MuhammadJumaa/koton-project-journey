@@ -49,13 +49,15 @@ io.on('connection', (socket) => {
   console.log(`Player connected: ${socket.id}`);
 
   // Join the shared world
-  socket.on('join-world', ({ name, avatar, currentStep, completedSteps }) => {
+  socket.on('join-world', ({ name, avatar, currentStep, completedSteps, startedAt, completedAt }) => {
     const player = worldManager.addPlayer(
       socket.id,
       name,
       avatar,
       currentStep || 1,
-      completedSteps || []
+      completedSteps || [],
+      startedAt || null,
+      completedAt || null
     );
 
     // Join the global "world" room
@@ -66,8 +68,18 @@ io.on('connection', (socket) => {
       players: worldManager.getAllPlayers(),
     });
 
+    // Send initial leaderboard
+    socket.emit('leaderboard-update', {
+      leaderboard: worldManager.getLeaderboard(),
+    });
+
     // Notify all other players about the new player
     socket.to('world').emit('player-joined', player);
+
+    // Broadcast updated leaderboard to all players
+    io.to('world').emit('leaderboard-update', {
+      leaderboard: worldManager.getLeaderboard(),
+    });
 
     console.log(`${name} (${avatar}) joined the world at step ${currentStep}`);
   });
@@ -83,6 +95,11 @@ io.on('connection', (socket) => {
         stepId,
         newStep: player.currentStep,
         completedSteps: player.completedSteps,
+      });
+
+      // Broadcast updated leaderboard
+      io.to('world').emit('leaderboard-update', {
+        leaderboard: worldManager.getLeaderboard(),
       });
 
       console.log(`${player.name} completed step ${stepId}, now at step ${player.currentStep}`);
@@ -102,6 +119,11 @@ io.on('connection', (socket) => {
         completedSteps: [],
       });
 
+      // Broadcast updated leaderboard
+      io.to('world').emit('leaderboard-update', {
+        leaderboard: worldManager.getLeaderboard(),
+      });
+
       console.log(`${player.name} reset their progress`);
     }
   });
@@ -114,6 +136,11 @@ io.on('connection', (socket) => {
       // Notify all players
       io.to('world').emit('player-left', {
         socketId: socket.id,
+      });
+
+      // Broadcast updated leaderboard
+      io.to('world').emit('leaderboard-update', {
+        leaderboard: worldManager.getLeaderboard(),
       });
 
       console.log(`${player.name} left the world`);
@@ -135,6 +162,26 @@ io.on('connection', (socket) => {
       });
 
       console.log(`${player.name} left the world`);
+    }
+  });
+
+  // Send reaction to another player
+  socket.on('send-reaction', ({ targetSocketId, emoji }) => {
+    const sender = worldManager.getPlayer(socket.id);
+    const target = worldManager.getPlayer(targetSocketId);
+
+    if (sender && target) {
+      // Broadcast reaction to all players
+      io.to('world').emit('reaction-received', {
+        fromSocketId: socket.id,
+        fromName: sender.name,
+        fromAvatar: sender.avatar,
+        targetSocketId,
+        targetName: target.name,
+        emoji,
+      });
+
+      console.log(`${sender.name} sent ${emoji} to ${target.name}`);
     }
   });
 });

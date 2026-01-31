@@ -11,6 +11,23 @@ export interface Player {
   completedSteps: number[];
 }
 
+export interface LeaderboardEntry {
+  socketId: string;
+  name: string;
+  avatar: string;
+  progress: number;
+  completedSteps: number;
+  totalTimeMs: number | null;
+  isCompleted: boolean;
+}
+
+export interface ActiveReaction {
+  id: string;
+  targetSocketId: string;
+  emoji: string;
+  fromName: string;
+}
+
 interface WorldState {
   // Connection
   isConnected: boolean;
@@ -28,6 +45,19 @@ interface WorldState {
 
   // World
   players: Player[];
+
+  // Easter Eggs
+  foundEasterEggs: string[];
+
+  // Leaderboard
+  leaderboard: LeaderboardEntry[];
+
+  // Timing
+  startedAt: number | null;
+  completedAt: number | null;
+
+  // Reactions
+  activeReactions: ActiveReaction[];
 }
 
 type WorldAction =
@@ -42,7 +72,11 @@ type WorldAction =
   | { type: 'STEP_COMPLETED'; payload: { socketId: string; stepId: number; newStep: number; completedSteps: number[] } }
   | { type: 'LOCAL_STEP_COMPLETED'; payload: { stepId: number } }
   | { type: 'RESET_PROGRESS' }
-  | { type: 'LOAD_SAVED_STATE'; payload: { completedSteps: number[]; currentStep: number; playerName: string; avatar: string } };
+  | { type: 'LOAD_SAVED_STATE'; payload: { completedSteps: number[]; currentStep: number; playerName: string; avatar: string; foundEasterEggs?: string[]; startedAt?: number | null; completedAt?: number | null } }
+  | { type: 'FIND_EASTER_EGG'; payload: string }
+  | { type: 'UPDATE_LEADERBOARD'; payload: LeaderboardEntry[] }
+  | { type: 'ADD_REACTION'; payload: ActiveReaction }
+  | { type: 'REMOVE_REACTION'; payload: string };
 
 const initialState: WorldState = {
   isConnected: false,
@@ -54,6 +88,11 @@ const initialState: WorldState = {
   currentStep: 1,
   completedSteps: [],
   players: [],
+  foundEasterEggs: [],
+  leaderboard: [],
+  startedAt: null,
+  completedAt: null,
+  activeReactions: [],
 };
 
 function worldReducer(state: WorldState, action: WorldAction): WorldState {
@@ -140,6 +179,36 @@ function worldReducer(state: WorldState, action: WorldAction): WorldState {
         currentStep: action.payload.currentStep,
         playerName: action.payload.playerName,
         avatar: action.payload.avatar,
+        foundEasterEggs: action.payload.foundEasterEggs || [],
+        startedAt: action.payload.startedAt || Date.now(),
+        completedAt: action.payload.completedAt || null,
+      };
+
+    case 'FIND_EASTER_EGG':
+      if (state.foundEasterEggs.includes(action.payload)) {
+        return state;
+      }
+      return {
+        ...state,
+        foundEasterEggs: [...state.foundEasterEggs, action.payload],
+      };
+
+    case 'UPDATE_LEADERBOARD':
+      return {
+        ...state,
+        leaderboard: action.payload,
+      };
+
+    case 'ADD_REACTION':
+      return {
+        ...state,
+        activeReactions: [...state.activeReactions, action.payload],
+      };
+
+    case 'REMOVE_REACTION':
+      return {
+        ...state,
+        activeReactions: state.activeReactions.filter(r => r.id !== action.payload),
       };
 
     default:
@@ -153,6 +222,9 @@ interface WorldContextValue extends WorldState {
   completeStep: (stepId: number) => void;
   resetProgress: () => void;
   leaveWorld: () => void;
+  findEasterEgg: (eggId: string) => void;
+  sendReaction: (targetSocketId: string, emoji: string) => void;
+  removeReaction: (reactionId: string) => void;
 }
 
 const WorldContext = createContext<WorldContextValue | null>(null);
@@ -170,7 +242,7 @@ export function WorldProvider({ children }: { children: ReactNode }) {
 
   // Save progress when it changes (only if we have a player name)
   useEffect(() => {
-    if (state.playerName && (state.completedSteps.length > 0 || state.currentStep > 1)) {
+    if (state.playerName && (state.completedSteps.length > 0 || state.currentStep > 1 || state.foundEasterEggs.length > 0)) {
       const storageKey = getStorageKey(state.playerName);
       localStorage.setItem(
         storageKey,
@@ -179,10 +251,13 @@ export function WorldProvider({ children }: { children: ReactNode }) {
           currentStep: state.currentStep,
           playerName: state.playerName,
           avatar: state.avatar,
+          foundEasterEggs: state.foundEasterEggs,
+          startedAt: state.startedAt,
+          completedAt: state.completedAt,
         })
       );
     }
-  }, [state.completedSteps, state.currentStep, state.playerName, state.avatar]);
+  }, [state.completedSteps, state.currentStep, state.playerName, state.avatar, state.foundEasterEggs, state.startedAt, state.completedAt]);
 
   // Setup socket listeners - called directly, not in useEffect
   const setupSocketListeners = useCallback((socket: ReturnType<typeof getSocket>) => {
@@ -214,11 +289,29 @@ export function WorldProvider({ children }: { children: ReactNode }) {
       dispatch({ type: 'SET_DISCONNECTED' });
     };
 
+    const handleLeaderboardUpdate = ({ leaderboard }: { leaderboard: LeaderboardEntry[] }) => {
+      console.log('Leaderboard updated:', leaderboard);
+      dispatch({ type: 'UPDATE_LEADERBOARD', payload: leaderboard });
+    };
+
+    const handleReactionReceived = (data: { fromSocketId: string; fromName: string; targetSocketId: string; emoji: string }) => {
+      console.log('Reaction received:', data);
+      const reaction: ActiveReaction = {
+        id: `${data.fromSocketId}-${data.targetSocketId}-${Date.now()}`,
+        targetSocketId: data.targetSocketId,
+        emoji: data.emoji,
+        fromName: data.fromName,
+      };
+      dispatch({ type: 'ADD_REACTION', payload: reaction });
+    };
+
     socket.on('world-state', handleWorldState);
     socket.on('player-joined', handlePlayerJoined);
     socket.on('player-left', handlePlayerLeft);
     socket.on('step-completed', handleStepCompleted);
     socket.on('disconnect', handleDisconnect);
+    socket.on('leaderboard-update', handleLeaderboardUpdate);
+    socket.on('reaction-received', handleReactionReceived);
 
     listenersSetup.current = true;
     console.log('Socket listeners setup complete');
@@ -234,6 +327,8 @@ export function WorldProvider({ children }: { children: ReactNode }) {
         socket.off('player-left');
         socket.off('step-completed');
         socket.off('disconnect');
+        socket.off('leaderboard-update');
+        socket.off('reaction-received');
       }
       listenersSetup.current = false;
     };
@@ -249,6 +344,9 @@ export function WorldProvider({ children }: { children: ReactNode }) {
     let completedSteps: number[] = [];
     let currentStep = 1;
     let avatar = state.avatar;
+    let foundEasterEggs: string[] = [];
+    let startedAt: number | null = Date.now();
+    let completedAt: number | null = null;
 
     if (saved) {
       try {
@@ -257,6 +355,9 @@ export function WorldProvider({ children }: { children: ReactNode }) {
           completedSteps = parsed.completedSteps;
           currentStep = parsed.currentStep || 1;
           avatar = parsed.avatar || state.avatar;
+          foundEasterEggs = parsed.foundEasterEggs || [];
+          startedAt = parsed.startedAt || Date.now();
+          completedAt = parsed.completedAt || null;
         }
       } catch (e) {
         console.error('Failed to load saved progress:', e);
@@ -271,6 +372,9 @@ export function WorldProvider({ children }: { children: ReactNode }) {
         currentStep,
         playerName: name,
         avatar,
+        foundEasterEggs,
+        startedAt,
+        completedAt,
       },
     });
 
@@ -295,6 +399,8 @@ export function WorldProvider({ children }: { children: ReactNode }) {
         avatar,
         currentStep,
         completedSteps,
+        startedAt,
+        completedAt,
       });
 
       console.log('Emitted join-world for:', name);
@@ -345,12 +451,32 @@ export function WorldProvider({ children }: { children: ReactNode }) {
     dispatch({ type: 'SET_DISCONNECTED' });
   }, []);
 
+  const findEasterEgg = useCallback((eggId: string) => {
+    dispatch({ type: 'FIND_EASTER_EGG', payload: eggId });
+  }, []);
+
+  const sendReaction = useCallback((targetSocketId: string, emoji: string) => {
+    if (state.isConnected) {
+      const socket = getSocket();
+      if (socket) {
+        socket.emit('send-reaction', { targetSocketId, emoji });
+      }
+    }
+  }, [state.isConnected]);
+
+  const removeReaction = useCallback((reactionId: string) => {
+    dispatch({ type: 'REMOVE_REACTION', payload: reactionId });
+  }, []);
+
   const value: WorldContextValue = {
     ...state,
     joinWorld,
     completeStep,
     resetProgress,
     leaveWorld,
+    findEasterEgg,
+    sendReaction,
+    removeReaction,
   };
 
   return <WorldContext.Provider value={value}>{children}</WorldContext.Provider>;

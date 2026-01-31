@@ -1,0 +1,128 @@
+.leaderboard {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.title {
+  color: #fff;
+  font-size: 14px;
+  margin: 0 0 12px 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.title::before {
+  content: '🏆';
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.entry {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  font-size: 13px;
+  transition: background 0.2s;
+}
+
+.entry:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.entry.current {
+  background: rgba(102, 126, 234, 0.15);
+  border: 1px solid rgba(102, 126, 234, 0.3);
+}
+
+.rank {
+  width: 24px;
+  text-align: center;
+  font-weight: 600;
+  color: #a0aec0;
+}
+
+.avatar {
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.name {
+  flex: 1;
+  color: #e2e8f0;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.youBadge {
+  background: #667eea;
+  color: white;
+  font-size: 9px;
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.progress {
+  color: #a78bfa;
+  font-weight: 600;
+  font-size: 12px;
+  min-width: 36px;
+  text-align: right;
+}
+
+.time {
+  color: #fbbf24;
+  font-size: 11px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.bolt {
+  font-size: 12px;
+}
+
+/* Top 3 special styling */
+.entry:nth-child(1) .rank {
+  font-size: 16px;
+}
+
+.entry:nth-child(2) .rank {
+  font-size: 15px;
+}
+
+.entry:nth-child(3) .rank {
+  font-size: 14px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .leaderboard {
+    margin-top: 12px;
+    padding-top: 12px;
+  }
+
+  .entry {
+    padding: 6px 8px;
+    font-size: 12px;
+  }
+
+  .avatar {
+    font-size: 16px;
+  }
+}

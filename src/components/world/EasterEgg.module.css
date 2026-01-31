@@ -1,0 +1,52 @@
+.easterEgg {
+  position: absolute;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  font-size: 20px;
+  opacity: 0.3;
+  transition: opacity 0.3s, transform 0.3s;
+  z-index: 5;
+  filter: grayscale(0.5);
+}
+
+.easterEgg:hover,
+.easterEgg.hovered {
+  opacity: 1;
+  transform: scale(1.3);
+  filter: grayscale(0);
+}
+
+.icon {
+  display: block;
+  animation: subtle-bob 4s ease-in-out infinite;
+}
+
+@keyframes subtle-bob {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+/* Make eggs even more subtle initially */
+.easterEgg::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.easterEgg:hover::after {
+  opacity: 1;
+}

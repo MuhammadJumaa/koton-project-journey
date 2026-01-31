@@ -43,11 +43,22 @@
   border-radius: 12px;
   padding: 12px;
   border: 1px solid rgba(255, 255, 255, 0.05);
-  transition: border-color 0.2s, background 0.2s;
+  transition: border-color 0.2s, background 0.2s, transform 0.2s;
+  position: relative;
+  overflow: visible;
 }
 
 .playerCard:hover {
   background: rgba(255, 255, 255, 0.08);
+}
+
+.playerCard.clickable {
+  cursor: pointer;
+}
+
+.playerCard.clickable:hover {
+  transform: translateY(-2px);
+  border-color: rgba(102, 126, 234, 0.3);
 }
 
 .playerCard.current {
@@ -137,6 +148,19 @@
   font-size: 14px;
   text-align: center;
   padding: 20px 0;
+}
+
+.reactionHint {
+  color: #667eea;
+  font-size: 10px;
+  text-align: center;
+  margin-top: 8px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.playerCard.clickable:hover .reactionHint {
+  opacity: 1;
 }
 
 /* Scrollbar styling */
