@@ -181,6 +181,51 @@
   margin-top: 12px;
 }
 
+/* Signatures */
+.signatures {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px dashed rgba(255, 215, 0, 0.2);
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.signatureItem {
+  text-align: center;
+  min-width: 100px;
+}
+
+.signatureLine {
+  border-bottom: 1px solid rgba(255, 215, 0, 0.4);
+  padding-bottom: 4px;
+  margin-bottom: 6px;
+}
+
+.signature {
+  font-family: 'Brush Script MT', 'Segoe Script', cursive;
+  font-size: 18px;
+  color: #ffd700;
+  font-style: italic;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+.signatureName {
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: 1px;
+}
+
+.signatureTitle {
+  color: #718096;
+  font-size: 8px;
+  margin: 2px 0 0 0;
+  text-transform: uppercase;
+}
+
 .certificateSeal {
   position: absolute;
   bottom: 16px;
@@ -304,5 +349,25 @@
   .achievement {
     min-width: 80px;
     padding: 10px 12px;
+  }
+
+  .signatures {
+    gap: 12px;
+  }
+
+  .signatureItem {
+    min-width: 80px;
+  }
+
+  .signature {
+    font-size: 14px;
+  }
+
+  .signatureName {
+    font-size: 8px;
+  }
+
+  .signatureTitle {
+    font-size: 7px;
   }
 }

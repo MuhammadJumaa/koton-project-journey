@@ -62,6 +62,30 @@ export function TreasureScreen({ onBackToMap, onRestart }: TreasureScreenProps) 
             <p className={styles.certDate}>{currentDate}</p>
           </div>
 
+          <div className={styles.signatures}>
+            <div className={styles.signatureItem}>
+              <div className={styles.signatureLine}>
+                <span className={styles.signature}>Murat Karakaş</span>
+              </div>
+              <p className={styles.signatureName}>MURAT KARAKAŞ</p>
+              <p className={styles.signatureTitle}>Yazılım Geliştirme Grup Müdürü</p>
+            </div>
+            <div className={styles.signatureItem}>
+              <div className={styles.signatureLine}>
+                <span className={styles.signature}>Yasin Mataracı</span>
+              </div>
+              <p className={styles.signatureName}>YASİN MATARACI</p>
+              <p className={styles.signatureTitle}>Yazılım Yöneticisi</p>
+            </div>
+            <div className={styles.signatureItem}>
+              <div className={styles.signatureLine}>
+                <span className={styles.signature}>Nurettin Bozak</span>
+              </div>
+              <p className={styles.signatureName}>NURETTİN BOZAK</p>
+              <p className={styles.signatureTitle}>Yazılım Yöneticisi</p>
+            </div>
+          </div>
+
           <div className={styles.certificateSeal}>
             <span>KOTON</span>
             <span>DX</span>
